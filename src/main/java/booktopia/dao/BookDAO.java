@@ -30,4 +30,10 @@ public interface BookDAO {
 	// Phương thức lấy sách theo Id
 	Book getBookById(int id);
 	
+	// Phương thức lấy sách theo CartItemId
+    Book getBookByCartItemId(int cartItemId);
+
+    // Phương thức cập nhật một cuốn sách
+	void updateBook(Book book);
+	
 }

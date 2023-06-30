@@ -242,4 +242,60 @@ public class BookDAOImpl implements BookDAO {
 	    }
 	    return null; // Trả về null nếu không tìm thấy cuốn sách
 	}
+
+
+	@Override
+	public Book getBookByCartItemId(int cartItemId) {
+		Connection conn = null;
+        try {
+            conn = JDBCDataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT b.* FROM book b JOIN cartitem ci ON b.id = ci.book_id WHERE ci.id = ?");
+            stmt.setInt(1, cartItemId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Book book = new Book();
+                book.setId(rs.getInt("id"));
+                book.setName(rs.getString("name"));
+                book.setAuthor(rs.getString("author"));
+                book.setPrice(rs.getDouble("price"));
+                book.setCategoryId(rs.getInt("category_id"));
+                book.setImg(rs.getString("img"));
+                book.setDescription(rs.getString("description"));
+                book.setStatus(rs.getInt("status"));
+                book.setDetail(rs.getString("detail"));
+                book.setQuantity(rs.getInt("quantity"));
+                return book;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+        return null; // Trả về null nếu không tìm thấy sách dựa trên cartItemId
+    }
+	
+	@Override
+	public void updateBook(Book book) {
+	    Connection conn = null;
+	    try {
+	        conn = JDBCDataSource.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement("UPDATE book SET name = ?, author = ?, price = ?, category_id = ?, img = ?, description = ?, status = ?, detail = ?, quantity = ? WHERE id = ?");
+	        stmt.setString(1, book.getName());
+	        stmt.setString(2, book.getAuthor());
+	        stmt.setDouble(3, book.getPrice());
+	        stmt.setInt(4, book.getCategoryId());
+	        stmt.setString(5, book.getImg());
+	        stmt.setString(6, book.getDescription());
+	        stmt.setInt(7, book.getStatus());
+	        stmt.setString(8, book.getDetail());
+	        stmt.setInt(9, book.getQuantity());
+	        stmt.setInt(10, book.getId());
+	        stmt.executeUpdate();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCDataSource.closeConnection(conn);
+	    }
+	}
+
 }

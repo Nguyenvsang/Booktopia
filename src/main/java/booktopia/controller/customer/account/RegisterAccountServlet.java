@@ -38,6 +38,7 @@ public class RegisterAccountServlet extends HttpServlet {
         String password = request.getParameter("password");
         String address = request.getParameter("address");
         String phoneNumber = request.getParameter("phoneNumber");
+        String email = request.getParameter("email");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String gender = request.getParameter("gender");
@@ -48,7 +49,7 @@ public class RegisterAccountServlet extends HttpServlet {
         // Băm mật khẩu sử dụng bcrypt
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        Account account = new Account(username, hashedPassword, address, phoneNumber, 1, 1);
+        Account account = new Account(username, hashedPassword, address, phoneNumber, email, 1, 1);
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setGender(gender);

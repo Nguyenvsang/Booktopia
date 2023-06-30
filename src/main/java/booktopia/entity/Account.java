@@ -23,6 +23,8 @@ public class Account {
     private String address;
   
     private String phoneNumber;
+    
+    private String email;
  
     private int accountType; //customer:1, admin:0
 
@@ -34,12 +36,13 @@ public class Account {
         // default constructor
     }
 
-	public Account(String username, String password, String address, String phoneNumber, int accountType, int status) {
+	public Account(String username, String password, String address, String phoneNumber, String email, int accountType, int status) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.email = email;
 		this.accountType = accountType;
 		this.status = status;
 	}
@@ -122,6 +125,14 @@ public class Account {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public int getAccountType() {

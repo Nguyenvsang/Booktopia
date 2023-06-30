@@ -35,13 +35,13 @@ public class CartItemDAOImpl implements CartItemDAO {
 	}
 
 	@Override
-	public List<CartItem> getCartItemsById(int id) {
+	public List<CartItem> getCartItemsByCartId(int cartId) {
 		List<CartItem> cartItems = new ArrayList<>();
         Connection conn = null;
         try {
             conn = JDBCDataSource.getConnection();
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM CartItem WHERE cart_id = ?");
-            stmt.setInt(1, id);
+            stmt.setInt(1, cartId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 CartItem cartItem = new CartItem();
@@ -130,6 +130,30 @@ public class CartItemDAOImpl implements CartItemDAO {
 	        JDBCDataSource.closeConnection(conn);
 	    }
 	    return null;
+	}
+
+	@Override
+	public CartItem getCartItemById(int itemId) {
+		CartItem cartItem = null;
+	    Connection conn = null;
+	    try {
+	        conn = JDBCDataSource.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM CartItem WHERE id = ?");
+	        stmt.setInt(1, itemId);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            cartItem = new CartItem();
+	            cartItem.setId(rs.getInt("id"));
+	            cartItem.setQuantity(rs.getInt("quantity"));
+	            cartItem.setCartId(rs.getInt("cart_id"));
+	            cartItem.setBookId(rs.getInt("book_id"));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCDataSource.closeConnection(conn);
+	    }
+	    return cartItem;
 	}
 
 }

@@ -33,6 +33,7 @@ public class AccountDAOImpl implements AccountDAO {
                 account.setDateOfBirth(rs.getDate("date_of_birth"));
                 account.setAddress(rs.getString("address"));
                 account.setPhoneNumber(rs.getString("phone_number"));
+                account.setEmail(rs.getString("email"));
                 account.setAccountType(rs.getInt("account_type"));
                 account.setStatus(rs.getInt("status"));
                 accounts.add(account);
@@ -50,7 +51,7 @@ public class AccountDAOImpl implements AccountDAO {
         Connection conn = null;
         try {
             conn = JDBCDataSource.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Account (first_name, last_name, username, password, gender, img, date_of_birth, address, phone_number, account_type, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Account (first_name, last_name, username, password, gender, img, date_of_birth, address, phone_number, email, account_type, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmt.setString(1, account.getFirstName());
             stmt.setString(2, account.getLastName());
             stmt.setString(3, account.getUsername());
@@ -60,8 +61,9 @@ public class AccountDAOImpl implements AccountDAO {
             stmt.setDate(7, new java.sql.Date(account.getDateOfBirth().getTime()));
             stmt.setString(8, account.getAddress());
             stmt.setString(9, account.getPhoneNumber());
-            stmt.setInt(10, account.getAccountType());
-            stmt.setInt(11, account.getStatus());
+            stmt.setString(10, account.getEmail());
+            stmt.setInt(11, account.getAccountType());
+            stmt.setInt(12, account.getStatus());
             stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,7 +92,7 @@ public class AccountDAOImpl implements AccountDAO {
         Connection conn = null;
         try {
             conn = JDBCDataSource.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Account SET first_name = ?, last_name = ?, username = ?, password = ?, gender = ?, img = ?, date_of_birth = ?, address = ?, phone_number = ?, account_type = ?, status = ? WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Account SET first_name = ?, last_name = ?, username = ?, password = ?, gender = ?, img = ?, date_of_birth = ?, address = ?, phone_number = ?, email = ?, account_type = ?, status = ? WHERE id = ?");
             stmt.setString(1, account.getFirstName());
             stmt.setString(2, account.getLastName());
             stmt.setString(3, account.getUsername());
@@ -100,9 +102,10 @@ public class AccountDAOImpl implements AccountDAO {
             stmt.setDate(7, new java.sql.Date(account.getDateOfBirth().getTime()));
             stmt.setString(8, account.getAddress());
             stmt.setString(9, account.getPhoneNumber());
-            stmt.setInt(10, account.getAccountType());
-            stmt.setInt(11, account.getStatus());
-            stmt.setInt(12, account.getId());
+            stmt.setString(10, account.getEmail());
+            stmt.setInt(11, account.getAccountType());
+            stmt.setInt(12, account.getStatus());
+            stmt.setInt(13, account.getId());
             stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -132,6 +135,7 @@ public class AccountDAOImpl implements AccountDAO {
                 account.setDateOfBirth(rs.getDate("date_of_birth"));
                 account.setAddress(rs.getString("address"));
                 account.setPhoneNumber(rs.getString("phone_number"));
+                account.setEmail(rs.getString("email"));
                 account.setAccountType(rs.getInt("account_type"));
                 account.setStatus(rs.getInt("status"));
             }

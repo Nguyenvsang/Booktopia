@@ -40,13 +40,13 @@
       %>
         <!-- Hiển thị "Username" và "Đăng xuất" và "Giỏ hàng" và "Đơn hàng" -->
        	<li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/jsp/customer/viewcart.jsp">Giỏ hàng</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/viewcart">Giỏ hàng</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="${pageContext.request.contextPath}/jsp/customer/logoutaccount.jsp">Đơn hàng</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/vieworders">Đơn hàng</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Chào <%= ((Account) session.getAttribute("account")).getFirstName() %></a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/viewaccount">Chào <%= ((Account) session.getAttribute("account")).getFirstName() %></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/jsp/customer/logoutaccount.jsp">Đăng xuất</a>

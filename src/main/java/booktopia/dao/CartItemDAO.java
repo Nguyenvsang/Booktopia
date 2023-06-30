@@ -5,9 +5,9 @@ import booktopia.entity.CartItem;
 
 public interface CartItemDAO {
 
-List<CartItem> getAllCartItems();
+	List<CartItem> getAllCartItems();
     
-    List<CartItem> getCartItemsById(int id);
+    List<CartItem> getCartItemsByCartId(int cartId);
     
     void addCartItem(CartItem cartItem);
     
@@ -16,4 +16,6 @@ List<CartItem> getAllCartItems();
     void deleteCartItem(int id);
     
 	CartItem getCartItemByCartAndBook(int cartId, int bookId);
+
+	CartItem getCartItemById(int itemId);
 }
