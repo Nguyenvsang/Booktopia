@@ -110,4 +110,67 @@ public class CategoryDAOImpl implements CategoryDAO {
         }
         return categories;
 	}
+
+	@Override
+	public List<Category> searchCategoriesByKeyword(List<Category> categories, String searchKeyword) {
+		List<Category> result = new ArrayList<>();
+	    String lowercaseKeyword = searchKeyword.toLowerCase();
+
+	    for (Category category : categories) {
+	        if (containsIgnoreCase(Integer.toString(category.getId()), lowercaseKeyword)
+	                || containsIgnoreCase(category.getName(), lowercaseKeyword)
+	                || containsIgnoreCase(Integer.toString(category.getStatus()), lowercaseKeyword)) {
+	            result.add(category);
+	        }
+	    }
+
+	    return result;
+	}
+	
+	// Kiểm tra xem một chuỗi có chứa một chuỗi con cụ thể hay không,
+	// mà không phân biệt chữ hoa chữ thường trong quá trình so sánh
+	private boolean containsIgnoreCase(String text, String keyword) {
+	    return text.toLowerCase().contains(keyword);
+	}
+
+	@Override
+	public List<Category> getCategoriesByStatusID(int statusId) {
+		List<Category> categories = new ArrayList<>();
+	    Connection conn = null;
+	    try {
+	        conn = JDBCDataSource.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Category WHERE status = ?");
+	        stmt.setInt(1, statusId);
+	        ResultSet rs = stmt.executeQuery();
+	        while (rs.next()) {
+	            Category category = new Category();
+	            category.setId(rs.getInt("id"));
+	            category.setName(rs.getString("name"));
+	            category.setStatus(rs.getInt("status"));
+	            categories.add(category);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCDataSource.closeConnection(conn);
+	    }
+	    return categories;
+	}
+
+	@Override
+	public void updateCategory(Category category) {
+		Connection conn = null;
+	    try {
+	        conn = JDBCDataSource.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement("UPDATE Category SET name = ?, status = ? WHERE id = ?");
+	        stmt.setString(1, category.getName());
+	        stmt.setInt(2, category.getStatus());
+	        stmt.setInt(3, category.getId());
+	        stmt.executeUpdate();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCDataSource.closeConnection(conn);
+	    }
+	}
 }

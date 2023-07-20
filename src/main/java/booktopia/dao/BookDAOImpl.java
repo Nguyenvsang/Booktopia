@@ -214,7 +214,7 @@ public class BookDAOImpl implements BookDAO {
 	}
 
 	@Override
-	public Book getBookById(int id) {
+	public Book getActiveBookById(int id) {
 		Connection conn = null;
 	    try {
 	        conn = JDBCDataSource.getConnection();
@@ -296,6 +296,67 @@ public class BookDAOImpl implements BookDAO {
 	    } finally {
 	        JDBCDataSource.closeConnection(conn);
 	    }
+	}
+
+
+	@Override
+	public Book getBookById(int id) {
+		Connection conn = null;
+	    try {
+	        conn = JDBCDataSource.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM book WHERE id = ?");
+	        stmt.setInt(1, id);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            Book book = new Book();
+	            book.setId(rs.getInt("id"));
+	            book.setName(rs.getString("name"));
+	            book.setAuthor(rs.getString("author"));
+	            book.setPrice(rs.getDouble("price"));
+	            book.setCategoryId(rs.getInt("category_id"));
+	            book.setImg(rs.getString("img"));
+	            book.setDescription(rs.getString("description"));
+	            book.setStatus(rs.getInt("status"));
+	            book.setDetail(rs.getString("detail"));
+	            book.setQuantity(rs.getInt("quantity"));
+	            return book;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCDataSource.closeConnection(conn);
+	    }
+	    return null; // Trả về null nếu không tìm thấy cuốn sách
+	}
+
+
+	@Override
+	public Book getLastBook() {
+        Connection conn = null;
+        try {
+            conn = JDBCDataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Book ORDER BY id DESC LIMIT 1");
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+            	Book book = new Book();
+	            book.setId(rs.getInt("id"));
+	            book.setName(rs.getString("name"));
+	            book.setAuthor(rs.getString("author"));
+	            book.setPrice(rs.getDouble("price"));
+	            book.setCategoryId(rs.getInt("category_id"));
+	            book.setImg(rs.getString("img"));
+	            book.setDescription(rs.getString("description"));
+	            book.setStatus(rs.getInt("status"));
+	            book.setDetail(rs.getString("detail"));
+	            book.setQuantity(rs.getInt("quantity"));
+	            return book;
+	        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+        return null;
 	}
 
 }

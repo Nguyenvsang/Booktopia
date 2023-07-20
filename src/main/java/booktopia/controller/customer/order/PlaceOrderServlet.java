@@ -100,6 +100,7 @@ public class PlaceOrderServlet extends HttpServlet {
         order.setPhoneNumber(phoneNumber);
         order.setEmail(email);
         order.setAccountId(cart.getAccountId());
+        order.setStatus(0);
 
         // Thêm đơn hàng vào cơ sở dữ liệu
         orderDAO.addOrder(order);

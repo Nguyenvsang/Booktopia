@@ -11,13 +11,12 @@
 <body>
     <div class="container">
         <h1>Thông tin cá nhân</h1>
-        <%-- Hiển thị thông báo cập nhật thành công --%>
-        <% String message = (String) request.getAttribute("message"); %>
-        <% if (message != null) { %>
-            <div class="alert alert-info" role="alert">
-                ${message}
-            </div>
-        <% } %>
+        
+        <%-- Hiển thị thông báo nếu có --%>
+        <c:if test="${not empty message}">
+            <div class="alert ${message.contains('thành công') ? 'alert-success' : 'alert-danger'}">${message}</div>
+        </c:if>
+        
         <div class="form-group">
             <label for="firstName">Họ:</label>
             <output class="form-control" id="firstName" name="firstName">${account.firstName}</output>
@@ -32,7 +31,7 @@
         </div>
         <div class="form-group">
             <label for="password">Mật khẩu:</label>
-                <a href="${pageContext.request.contextPath}/changepassword" class="btn btn-danger">Đổi mật khẩu</a>
+                <a href="${pageContext.request.contextPath}/jsp/customer/changepassword.jsp" class="btn btn-danger">Đổi mật khẩu</a>
         </div>
         <div class="form-group">
             <label for="gender">Giới tính:</label>
@@ -67,6 +66,7 @@
             <a href="${pageContext.request.contextPath}/jsp/customer/updateaccount.jsp" class="btn btn-primary">Sửa thông tin</a>
         </div>
     </div>
-    <%@ include file="../footer.jsp" %>
+    
 </body>
+<%@ include file="../footer.jsp" %>
 </html>

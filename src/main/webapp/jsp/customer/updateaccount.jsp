@@ -11,13 +11,12 @@
 <body>
     <div class="container">
         <h1>Nhập thông tin cần sửa</h1>
-        <%-- Hiển thị thông báo cập nhật thành công --%>
-            <% String message = (String) request.getAttribute("message"); %>
-            <% if (message != null) { %>
-                <div class="alert alert-info" role="alert">
-                    ${message}
-                </div>
-            <% } %>
+        
+        <%-- Hiển thị thông báo nếu có --%>
+        <c:if test="${not empty message}">
+            <div class="alert ${message.contains('thành công') ? 'alert-success' : 'alert-danger'}">${message}</div>
+        </c:if>
+            
         <form action="${pageContext.request.contextPath}/updateaccount" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="firstName">Tên:</label>

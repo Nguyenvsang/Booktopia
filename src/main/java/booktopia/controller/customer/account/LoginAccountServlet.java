@@ -27,6 +27,10 @@ public class LoginAccountServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Xóa session trước đó nếu còn sót
+        HttpSession oldsession = request.getSession();
+        oldsession.invalidate();
+		
 		// Lấy thông tin username và password từ form gửi lên
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");

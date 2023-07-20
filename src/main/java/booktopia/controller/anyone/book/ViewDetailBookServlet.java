@@ -36,7 +36,7 @@ public class ViewDetailBookServlet extends HttpServlet {
         String message = request.getParameter("message");
 
         // Truy xuất dữ liệu từ nguồn dữ liệu 
-        Book book = bookDao.getBookById(Integer.parseInt(bookId));
+        Book book = bookDao.getActiveBookById(Integer.parseInt(bookId));
 
         // Đặt thuộc tính vào request để sử dụng trong JSP
         request.setAttribute("book", book);

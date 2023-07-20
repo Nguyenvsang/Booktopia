@@ -58,7 +58,7 @@ public class UpdateAccountServlet extends HttpServlet {
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (account == null) {
             // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("jsp/customer/loginaccount.jsp");
             return;
         }
 
@@ -97,8 +97,8 @@ public class UpdateAccountServlet extends HttpServlet {
                 	// Nếu là tệp được tải lên
                 	String fileName = item.getName();
                 	if (fileName != null && !fileName.isEmpty()) {
-                	    // Tạo public ID cho hình ảnh trên Cloudinary (sử dụng tên người dùng và thời gian)
-                	    String publicId = "Booktopia/img_account/" + account.getUsername() + "_" + System.currentTimeMillis();
+                	    // Tạo public ID cho hình ảnh trên Cloudinary (sử dụng tên người dùng)
+                	    String publicId = "Booktopia/img_account/" + account.getUsername();
 
                 	    // Đọc dữ liệu từ InputStream và lưu vào một mảng byte
                 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

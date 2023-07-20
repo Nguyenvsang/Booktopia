@@ -73,7 +73,7 @@
             <ul class="pagination">
                 <c:if test="${currentPage > 1}">
                     <li class="page-item">
-                        <a class="page-link" href="?page=${currentPage - 1}">Previous</a>
+                        <a class="page-link" href="?page=${currentPage - 1}">Trước</a>
                     </li>
                 </c:if>
 
@@ -92,7 +92,7 @@
 
                 <c:if test="${currentPage < totalPages}">
                     <li class="page-item">
-                        <a class="page-link" href="?page=${currentPage + 1}">Next</a>
+                        <a class="page-link" href="?page=${currentPage + 1}">Sau</a>
                     </li>
                 </c:if>
             </ul>

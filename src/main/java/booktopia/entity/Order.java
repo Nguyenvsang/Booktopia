@@ -20,13 +20,16 @@ public class Order {
     private String email;
     
     private int accountId;
+    
+    private int status; // 0: Chờ xác nhận, 1: Chờ lấy hàng, 
+    					// 2: Đang giao, 3: Đã giao
 
 	public Order() {
 		super();
 	}
 
 	public Order(Date dateOrder, double totalPrice, String name, String address, String phoneNumber, String email,
-			int accountId) {
+			int accountId, int status) {
 		super();
 		this.dateOrder = dateOrder;
 		this.totalPrice = totalPrice;
@@ -35,6 +38,7 @@ public class Order {
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.accountId = accountId;
+		this.status = status;
 	}
 
 	public int getId() {
@@ -100,6 +104,13 @@ public class Order {
 	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
-    
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
     
 }

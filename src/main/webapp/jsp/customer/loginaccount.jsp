@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,15 +14,12 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h3 class="text-center">Đăng nhập</h3>
-            <% 
-                // Kiểm tra xem có thông báo lỗi không
-                String message = (String) request.getAttribute("message");
-                if (message != null) {
-            %>
-                <div class="alert alert-danger" role="alert">
-                    <%= message %>
-                </div>
-            <% } %>
+            
+            <%-- Hiển thị thông báo nếu có --%>
+	        <c:if test="${not empty message}">
+	            <div class="alert ${message.contains('thành công') ? 'alert-success' : 'alert-danger'}">${message}</div>
+	        </c:if>
+	        
             <form action="${pageContext.request.contextPath}/loginaccount" method="post">
                 <div class="form-group">
                     <label for="username">Tên đăng nhập:</label>

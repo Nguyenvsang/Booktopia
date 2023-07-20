@@ -23,7 +23,7 @@ public class ViewAccountServlet extends HttpServlet {
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
         if (account == null) {
             // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("jsp/customer/loginaccount.jsp");
             return;
         }
 

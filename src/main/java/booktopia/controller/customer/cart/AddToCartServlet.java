@@ -83,7 +83,7 @@ public class AddToCartServlet extends HttpServlet {
             int newQuantity = currentQuantity + quantity;
 
             // Lấy thông tin sách từ cơ sở dữ liệu
-            Book book = bookDAO.getBookById(bookId);
+            Book book = bookDAO.getActiveBookById(bookId);
 
             // Kiểm tra số lượng tồn kho
             if (newQuantity > book.getQuantity()) {

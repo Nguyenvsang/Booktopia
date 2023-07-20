@@ -167,4 +167,25 @@ public class AccountDAOImpl implements AccountDAO {
         }
         return false;
     }
+
+	@Override
+	public boolean checkLoginAdmin(String username, String password) {
+		Connection conn = null;
+        try {
+            conn = JDBCDataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Account WHERE username = ? AND account_type = 0 AND status = 1");
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String hashedPassword = rs.getString("password");
+                // Kiểm tra mật khẩu băm
+                return BCrypt.checkpw(password, hashedPassword);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+        return false;
+	}
 }

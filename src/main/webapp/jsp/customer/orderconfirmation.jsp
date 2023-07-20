@@ -22,11 +22,29 @@
                 <th>Mã đơn hàng</th>
                 <th>Ngày đặt</th>
                 <th>Tổng tiền</th>
+                <th>Trạng thái</th>
             </tr>
             <tr>
                 <td>${order.id}</td>
                 <td>${order.dateOrder}</td>
                 <td>${order.totalPrice}</td>
+                <td>
+	                <c:choose>
+	                    <c:when test="${order.status == 0}">
+	                        <span class="badge badge-success">Chờ xác nhận</span>
+	                    </c:when>
+	                    <c:when test="${order.status == 1}">
+	                        <span class="badge badge-info">Chờ lấy hàng</span>
+	                    </c:when>
+	                    <c:when test="${order.status == 2}">
+	                        <span class="badge badge-primary">Đang giao</span>
+	                    </c:when>
+	                    <c:when test="${order.status == 3}">
+	                        <span class="badge badge-secondary">Đã giao</span>
+	                    </c:when>
+	                    <c:otherwise>Trạng thái không hợp lệ</c:otherwise>
+	                </c:choose>
+	            </td>
             </tr>
         </table>
         

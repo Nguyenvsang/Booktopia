@@ -27,13 +27,19 @@ public interface BookDAO {
     // Phương thức tìm kiếm sách dựa trên từ khóa
 	List<Book> searchBooksByKeyword(List<Book> books, String searchKeyword);
 
-	// Phương thức lấy sách theo Id
-	Book getBookById(int id);
+	// Phương thức lấy sách còn kinh doanh theo Id
+	Book getActiveBookById(int id);
 	
 	// Phương thức lấy sách theo CartItemId
     Book getBookByCartItemId(int cartItemId);
 
     // Phương thức cập nhật một cuốn sách
 	void updateBook(Book book);
+
+	// Phương thức lấy sách theo Id
+	Book getBookById(int id);
+	
+	// Lấy quyển sách cuối cùng
+	Book getLastBook();
 	
 }

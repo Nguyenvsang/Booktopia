@@ -26,4 +26,10 @@ public interface OrderDAO {
 
 	// Lấy đơn hàng theo Id
 	Order getOrderById(int orderId);
+
+	// Lấy đơn hàng theo mã trạng thái
+	List<Order> getOrdersByStatusID(int statusId);
+	
+	// Lấy đơn hàng theo từ khóa
+	List<Order> searchOrdersByKeyword(List<Order> orders, String searchKeyword);
 }

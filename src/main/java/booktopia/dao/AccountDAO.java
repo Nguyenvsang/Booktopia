@@ -23,4 +23,7 @@ public interface AccountDAO {
 	// Phương thức để kiểm tra đăng nhập của một tài khoản
 	boolean checkLogin(String username, String password);
 	
+	// Phương thức để kiểm tra đăng nhập của một tài khoản admin 
+	boolean checkLoginAdmin(String username, String password);
+	
 }

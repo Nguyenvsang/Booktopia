@@ -20,4 +20,13 @@ public interface CategoryDAO {
 
     // Phương thức lấy tất cả các danh mục còn kinh doanh 
 	List<Category> getActiveCategories();
+
+	// Lấy danh mục theo từ khóa
+	List<Category> searchCategoriesByKeyword(List<Category> categories, String searchKeyword);
+
+	// Lấy danh mục theo trạng thái
+	List<Category> getCategoriesByStatusID(int statusId);
+
+	// Cập nhật danh mục
+	void updateCategory(Category category);
 }

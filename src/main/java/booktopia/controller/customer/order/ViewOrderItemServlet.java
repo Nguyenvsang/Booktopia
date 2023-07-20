@@ -50,7 +50,8 @@ public class ViewOrderItemServlet extends HttpServlet {
         Map<Integer, Book> bookMap = new HashMap<>();
         for (OrderItem orderItem : orderItems) {
             int bookId = orderItem.getBookId();
-            Book book = bookDAO.getBookById(bookId);
+            // Vì bao gồm cả những sách ngừng kinh doanh nhưng có trong đơn hàng
+            Book book = bookDAO.getBookById(bookId); 
             bookMap.put(bookId, book);
         }
 
