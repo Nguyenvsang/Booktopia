@@ -1,7 +1,6 @@
 package booktopia.dao;
 
 import java.util.List;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 import booktopia.entity.Account;
@@ -187,5 +186,104 @@ public class AccountDAOImpl implements AccountDAO {
             JDBCDataSource.closeConnection(conn);
         }
         return false;
+	}
+
+	@Override
+	public List<Account> getAccountsByStatusID(int statusId) {
+		List<Account> accounts = new ArrayList<>();
+	    Connection conn = null;
+	    try {
+	        conn = JDBCDataSource.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Account WHERE status = ?");
+	        stmt.setInt(1, statusId);
+	        ResultSet rs = stmt.executeQuery();
+	        while (rs.next()) {
+	            Account account = new Account();
+	            account.setId(rs.getInt("id"));
+	            account.setFirstName(rs.getString("first_name"));
+	            account.setLastName(rs.getString("last_name"));
+	            account.setUsername(rs.getString("username"));
+	            account.setPassword(rs.getString("password"));
+	            account.setGender(rs.getString("gender"));
+	            account.setImg(rs.getString("img"));
+	            account.setDateOfBirth(rs.getDate("date_of_birth"));
+	            account.setAddress(rs.getString("address"));
+	            account.setPhoneNumber(rs.getString("phone_number"));
+	            account.setEmail(rs.getString("email"));
+	            account.setAccountType(rs.getInt("account_type"));
+	            account.setStatus(rs.getInt("status"));
+	            accounts.add(account);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCDataSource.closeConnection(conn);
+	    }
+	    return accounts;
+	}
+
+	@Override
+	public List<Account> searchAccountsByKeyword(List<Account> accounts, String searchKeyword) {
+		List<Account> result = new ArrayList<>();
+	    String lowercaseKeyword = searchKeyword.toLowerCase();
+	    
+	    for (Account account : accounts) {
+	    	if (containsIgnoreCase(Integer.toString(account.getId()), lowercaseKeyword)
+	    			|| containsIgnoreCase(account.getFirstName(), lowercaseKeyword)
+	    			|| containsIgnoreCase(account.getLastName(), lowercaseKeyword)
+	    			|| containsIgnoreCase(account.getUsername(), lowercaseKeyword)
+	    			|| containsIgnoreCase(account.getPassword(), lowercaseKeyword)
+	    			|| containsIgnoreCase(account.getGender(), lowercaseKeyword)
+	    			|| containsIgnoreCase(account.getImg(), lowercaseKeyword)
+	                || containsIgnoreCase(account.getDateOfBirth().toString(), lowercaseKeyword)
+	                || containsIgnoreCase(account.getAddress(), lowercaseKeyword)
+	                || containsIgnoreCase(account.getPhoneNumber(), lowercaseKeyword)
+	                || containsIgnoreCase(account.getEmail(), lowercaseKeyword)
+	                || containsIgnoreCase(Integer.toString(account.getAccountType()), lowercaseKeyword)
+	                || containsIgnoreCase(Integer.toString(account.getStatus()), lowercaseKeyword)) {
+	            result.add(account);
+	        }
+	    }
+	    
+	    return result;
+	}
+	
+	// Kiểm tra xem một chuỗi có chứa một chuỗi con cụ thể hay không,
+	// mà không phân biệt chữ hoa chữ thường trong quá trình so sánh
+	private boolean containsIgnoreCase(String text, String keyword) {
+	    return text.toLowerCase().contains(keyword);
+	}
+
+	@Override
+	public Account findAccountById(int id) {
+		Account account = null;
+	    Connection conn = null;
+	    try {
+	        conn = JDBCDataSource.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Account WHERE id = ?");
+	        stmt.setInt(1, id);
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            account = new Account();
+	            account.setId(rs.getInt("id"));
+	            account.setFirstName(rs.getString("first_name"));
+	            account.setLastName(rs.getString("last_name"));
+	            account.setUsername(rs.getString("username"));
+	            account.setPassword(rs.getString("password"));
+	            account.setGender(rs.getString("gender"));
+	            account.setImg(rs.getString("img"));
+	            account.setDateOfBirth(rs.getDate("date_of_birth"));
+	            account.setAddress(rs.getString("address"));
+	            account.setPhoneNumber(rs.getString("phone_number"));
+	            account.setEmail(rs.getString("email"));
+	            account.setAccountType(rs.getInt("account_type"));
+	            account.setStatus(rs.getInt("status"));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCDataSource.closeConnection(conn);
+	    }
+	    return account;
 	}
 }

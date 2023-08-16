@@ -49,13 +49,16 @@
                             <a class="nav-link" href="${pageContext.request.contextPath}/manageorder">Đơn hàng</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/viewaccount">Chào
+                            <a class="nav-link" href="#">Chào
                                 <c:out value="${admin.firstName}" />
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/manageaccount">Tài khoản</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link"
-                                href="${pageContext.request.contextPath}/jsp/customer/logoutaccount.jsp">Đăng xuất</a>
+                                href="${pageContext.request.contextPath}/jsp/admin/logoutadmin.jsp">Đăng xuất</a>
                         </li>
                     </c:when>
                     <c:otherwise>

@@ -26,4 +26,13 @@ public interface AccountDAO {
 	// Phương thức để kiểm tra đăng nhập của một tài khoản admin 
 	boolean checkLoginAdmin(String username, String password);
 	
+	// Phương thức để lấy danh sách tài khoản theo mã trạng thái
+	List<Account> getAccountsByStatusID(int statusId);
+	
+	// Phương thức tìm kiếm tài khoản dựa trên từ khóa
+	List<Account> searchAccountsByKeyword(List<Account> accounts, String searchKeyword);
+	
+	// Phương thức để tìm kiếm một tài khoản theo username
+	Account findAccountById(int id);
+	
 }

@@ -4,19 +4,23 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Thông tin cá nhân</title>
+    <title>Chi tiết tài khoản</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <%@ include file="../header.jsp"%>
+    <%@ include file="headeradmin.jsp"%>
 </head>
 <body>
     <div class="container">
-        <h1>Thông tin cá nhân</h1>
+        <h1>Chi tiết tài khoản</h1>
         
         <%-- Hiển thị thông báo nếu có --%>
         <c:if test="${not empty message}">
             <div class="alert ${message.contains('thành công') ? 'alert-success' : 'alert-danger'}">${message}</div>
         </c:if>
         
+        <div class="form-group">
+            <label for="id">Mã:</label>
+            <output class="form-control" id="id" name="id">${account.id}</output>
+        </div>
         <div class="form-group">
             <label for="firstName">Tên:</label>
             <output class="form-control" id="firstName" name="firstName">${account.firstName}</output>
@@ -31,7 +35,8 @@
         </div>
         <div class="form-group">
             <label for="password">Mật khẩu:</label>
-                <a href="${pageContext.request.contextPath}/jsp/customer/changepassword.jsp" class="btn btn-danger">Đổi mật khẩu</a>
+            <output class="form-control mb-2" id="password" name="password">${account.password}</output>
+                <a href="${pageContext.request.contextPath}/managechangepassword?accountId=${account.id}" class="btn btn-danger">Đổi mật khẩu</a>
         </div>
         <div class="form-group">
             <label for="gender">Giới tính:</label>
@@ -39,10 +44,10 @@
         </div>
         <div class="form-group">
             <label for="currentImage">Hình ảnh hiện tại:</label>
-            <c:if test="${not empty sessionScope.account and not empty sessionScope.account.img}">
-                <img src="${sessionScope.account.img}?v=${Math.random()}" class="img-thumbnail" id="currentImage" alt="Hình ảnh hiện tại" style="width: 200px; height: 200px;">
+            <c:if test="${not empty account and not empty account.img}">
+                <img src="${account.img}?v=${Math.random()}" class="img-thumbnail" id="currentImage" alt="Hình ảnh hiện tại" style="width: 200px; height: 200px;">
             </c:if>
-            <c:if test="${empty sessionScope.account or empty sessionScope.account.img}">
+            <c:if test="${empty account or empty account.img}">
                 <img src="https://res.cloudinary.com/dosdzo1lg/image/upload/v1687862555/Booktopia/img_account/account_default.jpg" class="img-thumbnail" style="width: 200px; height: 200px;" id="currentImage" alt="Hình ảnh mặc định">
             </c:if>
         </div>
@@ -63,7 +68,8 @@
             <output class="form-control" id="email" name="email">${account.email}</output>
         </div>
         <div class="text-center mb-4">
-            <a href="${pageContext.request.contextPath}/updateaccount" class="btn btn-primary">Sửa thông tin</a>
+            <a href="${pageContext.request.contextPath}/editaccount?accountId=${account.id}" class="btn btn-primary">Sửa thông tin</a>
+            <a href="${pageContext.request.contextPath}/manageaccount" class="btn btn-secondary">Thoát</a>
         </div>
     </div>
     

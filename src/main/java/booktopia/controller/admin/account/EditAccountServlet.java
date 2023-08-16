@@ -1,12 +1,10 @@
-package booktopia.controller.customer.account;
+package booktopia.controller.admin.account;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Map;
-import org.apache.commons.io.IOUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,18 +18,21 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
+import org.apache.commons.io.IOUtils;
+
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
-import booktopia.entity.Account;
 import booktopia.dao.AccountDAO;
 import booktopia.dao.AccountDAOImpl;
+import booktopia.entity.Account;
 
-@WebServlet(name = "UpdateAccountServlet", urlPatterns = {"/updateaccount"})
-public class UpdateAccountServlet extends HttpServlet {
+@WebServlet(name = "EditAccountServlet", urlPatterns = {"/editaccount"})
+public class EditAccountServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
+    
     private AccountDAO accountDao;
+
     private Cloudinary cloudinary;
 
     @Override
@@ -46,41 +47,53 @@ public class UpdateAccountServlet extends HttpServlet {
         		  "api_secret", "tmvGJJ8g7bRQKvhSNDXZRvD4WDI"
         ));
     }
-    
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     
-        HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
+    	HttpSession session = request.getSession();
+        Account admin = (Account) session.getAttribute("admin");
 
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        if (account == null) {
+        // Kiểm tra xem admin đã đăng nhập hay chưa
+        if (admin == null) {
             // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
-            response.sendRedirect("jsp/customer/loginaccount.jsp");
+            response.sendRedirect("jsp/admin/loginadmin.jsp");
             return;
         }
+        
+        // Lấy thông tin về tài khoản từ yêu cầu (thông qua tham số truyền)
+        String accountId = request.getParameter("accountId");
+        
+        // Truy xuất dữ liệu từ nguồn dữ liệu 
+        Account account = accountDao.findAccountById(Integer.parseInt(accountId));
 
         // Lưu thông tin tài khoản vào session
         session.setAttribute("account", account);
 
-        // Forward đến trang xem thông tin tài khoản
-        request.getRequestDispatcher("jsp/customer/updateaccount.jsp").forward(request, response);
+        // Forward đến trang quản lý chi tiết tài khoản
+        request.getRequestDispatcher("jsp/admin/editaccount.jsp").forward(request, response);
     }
-
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute("account");
+        Account admin = (Account) session.getAttribute("admin");
 
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        if (account == null) {
+        // Kiểm tra xem admin đã đăng nhập hay chưa
+        if (admin == null) {
             // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
-            response.sendRedirect("jsp/customer/loginaccount.jsp");
+            response.sendRedirect("jsp/admin/loginadmin.jsp");
             return;
         }
+        
+        // Lấy thông tin về tài khoản từ yêu cầu (thông qua tham số truyền)
+        String accountId = request.getParameter("accountId");
+        
+        // Truy xuất dữ liệu từ nguồn dữ liệu 
+        Account account = accountDao.findAccountById(Integer.parseInt(accountId));
         
         Account updateAccount = account;
 
@@ -102,7 +115,7 @@ public class UpdateAccountServlet extends HttpServlet {
                     		// Username already exists
                     		request.setAttribute("account", account);
                     		request.setAttribute("message", "Tên tài khoản đã tồn tại. Vui lòng chọn tên khác.");
-                            request.getRequestDispatcher("jsp/customer/updateaccount.jsp").forward(request, response);
+                            request.getRequestDispatcher("jsp/admin/editaccount.jsp").forward(request, response);
                             return;
                     	}
                     	updateAccount.setUsername(value);
@@ -151,12 +164,17 @@ public class UpdateAccountServlet extends HttpServlet {
             // Cập nhật tài khoản trong cơ sở dữ liệu
             accountDao.updateAccount(updateAccount);
 
-            // Lưu thông tin tài khoản mới vào session
-            session.setAttribute("account", updateAccount);
-
-            // Forward đến trang xem thông tin tài khoản
+            // Nếu trùng với admin thì lưu thông tin tài khoản mới vào session
+            if(admin.getId() == account.getId()) {
+            	session.setAttribute("admin", updateAccount);
+            	request.setAttribute("account", updateAccount);
+            } else {
+            	request.setAttribute("account", updateAccount);
+            }
+            
+            // Forward đến trang xem thông tin chi tiết tài khoản
             request.setAttribute("message", "Đã cập nhật thành công!");
-            request.getRequestDispatcher("jsp/customer/viewaccount.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/admin/managedetailaccount.jsp").forward(request, response);
         } catch (FileUploadException e) {
             e.printStackTrace();
         }

@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý danh mục</title>
+    <title>Quản lý tài khoản</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <style>
         th, td {
@@ -17,13 +17,9 @@
 <body>
     
     <div class="container-fluid mb-4">
-        <h1>Quản lý danh mục</h1>
+        <h1>Quản lý tài khoản</h1>
         
-        <div class="mb-3">
-	        <a href="${pageContext.request.contextPath}/addcategory" class="btn btn-primary">Thêm danh mục</a>
-	    </div>
-        
-        <form class="form-inline my-2 my-lg-0" method="GET" action="${pageContext.request.contextPath}/manageorder">
+        <form class="form-inline my-2 my-lg-0" method="GET" action="${pageContext.request.contextPath}/manageaccount">
             <input class="form-control mr-sm-2" type="text" name="search" placeholder="Tìm kiếm từ khóa">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Tìm kiếm</button>
         </form>
@@ -36,11 +32,11 @@
         
         <div class="my-2 my-lg-0 mt-3 mb-3">
 		    <label for="status">Trạng thái:</label>
-		    <form class="form-inline" method="GET" action="${pageContext.request.contextPath}/manageorder">
+		    <form class="form-inline" method="GET" action="${pageContext.request.contextPath}/manageaccount">
 		        <select class="form-control" id="status" name="status" onchange="this.form.submit()">
 		            <option value="-1" <c:if test="${param.status == '-1'}">selected</c:if>>Tất cả</option>
-		            <option value="0" <c:if test="${param.status == '0'}">selected</c:if>>Ngừng kinh doanh</option>
-		            <option value="1" <c:if test="${param.status == '1'}">selected</c:if>>Đang kinh doanh</option>
+		            <option value="0" <c:if test="${param.status == '0'}">selected</c:if>>Ngừng hoạt động</option>
+		            <option value="1" <c:if test="${param.status == '1'}">selected</c:if>>Đang hoạt động</option>
 		        </select>
 		    </form>
 		</div>
@@ -48,30 +44,54 @@
         <table class="table table-striped table-bordered mt-3">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" class="align-middle text-center">Mã danh mục</th>
-                    <th scope="col" class="align-middle text-center">Tên danh mục</th>
+                    <th scope="col" class="align-middle text-center">Mã tài khoản</th>
+                    <th scope="col" class="align-middle text-center">Tên</th>
+                    <th scope="col" class="align-middle text-center">Họ</th>
+                    <th scope="col" class="align-middle text-center">Tên tài khoản</th>
+                    <th scope="col" class="align-middle text-center">Giới tính</th>
+                    <th scope="col" class="align-middle text-center">Ảnh đại diện</th>
+                    <th scope="col" class="align-middle text-center">Số điện thoại</th>
+                    <th scope="col" class="align-middle text-center">Email</th>
+                    <th scope="col" class="align-middle text-center">Loại tài khoản</th>
                     <th scope="col" class="align-middle text-center">Trạng thái</th>
-                    <th scope="col" class="align-middle text-center">Sửa</th>
+                    <th scope="col" class="align-middle text-center">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="category" items="${categories}">
+                <c:forEach var="account" items="${accounts}">
                     <tr>
-                        <td class="align-middle text-center">${category.id}</td>
-                        <td class="align-middle text-center">${category.name}</td>
-                        <td>
+                        <td class="align-middle text-center">${account.id}</td>
+                        <td class="align-middle text-center">${account.firstName}</td>
+                        <td class="align-middle text-center">${account.lastName}</td>
+                        <td class="align-middle text-center">${account.username}</td>
+                        <td class="align-middle text-center">${account.gender}</td>
+                        <td class="text-center text-center"><img src="${account.img}" width="100"></td>
+                        <td class="align-middle text-center">${account.phoneNumber}</td>
+                        <td class="align-middle text-center">${account.email}</td>
+                        <td class="align-middle text-center">
 	                        <c:choose>
-	                            <c:when test="${category.status == 0}">
-	                                <span class="badge badge-secondary">Ngừng kinh doanh</span>
+	                            <c:when test="${account.accountType == 0}">
+	                                <span class="badge badge-success">Admin</span>
 	                            </c:when>
-	                            <c:when test="${category.status == 1}">
-	                                <span class="badge badge-info">Đang kinh doanh</span>
+	                            <c:when test="${account.accountType == 1}">
+	                                <span class="badge badge-info">Khách hàng</span>
+	                            </c:when>
+	                            <c:otherwise>Loại người dùng không hợp lệ</c:otherwise>
+	                        </c:choose>
+	                    </td>
+                        <td class="align-middle text-center">
+	                        <c:choose>
+	                            <c:when test="${account.status == 0}">
+	                                <span class="badge badge-success">Ngừng hoạt động</span>
+	                            </c:when>
+	                            <c:when test="${account.status == 1}">
+	                                <span class="badge badge-info">Đang hoạt động</span>
 	                            </c:when>
 	                            <c:otherwise>Trạng thái không hợp lệ</c:otherwise>
 	                        </c:choose>
 	                    </td>
                         <td class="align-middle text-center">
-                            <a href="${pageContext.request.contextPath}/editcategory?categoryId=${category.id}" class="btn btn-primary">Sửa</a>
+                            <a href="${pageContext.request.contextPath}/managedetailaccount?accountId=${account.id}" class="btn btn-primary">Chi tiết</a>
                         </td>
                     </tr>
                 </c:forEach>
